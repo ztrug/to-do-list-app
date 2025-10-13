@@ -8,6 +8,7 @@ interface User {
   name: string;
   age: number;
   howFound: string;
+  profilePhoto?: string;
 }
 
 interface StoredUser extends User {
@@ -67,6 +68,7 @@ export const [AuthContext, useAuth] = createContextHook(() => {
         name: newUser.name,
         age: newUser.age,
         howFound: newUser.howFound,
+        profilePhoto: newUser.profilePhoto,
       };
 
       await AsyncStorage.setItem(CURRENT_USER_KEY, JSON.stringify(userWithoutPassword));
@@ -98,6 +100,7 @@ export const [AuthContext, useAuth] = createContextHook(() => {
         name: foundUser.name,
         age: foundUser.age,
         howFound: foundUser.howFound,
+        profilePhoto: foundUser.profilePhoto,
       };
 
       await AsyncStorage.setItem(CURRENT_USER_KEY, JSON.stringify(userWithoutPassword));
@@ -119,11 +122,33 @@ export const [AuthContext, useAuth] = createContextHook(() => {
     }
   };
 
+  const updateProfilePhoto = async (photoUri: string) => {
+    if (!user) return;
+
+    try {
+      const usersJson = await AsyncStorage.getItem(USERS_KEY);
+      const users: StoredUser[] = usersJson ? JSON.parse(usersJson) : [];
+
+      const updatedUsers = users.map(u => 
+        u.id === user.id ? { ...u, profilePhoto: photoUri } : u
+      );
+
+      await AsyncStorage.setItem(USERS_KEY, JSON.stringify(updatedUsers));
+
+      const updatedUser = { ...user, profilePhoto: photoUri };
+      await AsyncStorage.setItem(CURRENT_USER_KEY, JSON.stringify(updatedUser));
+      setUser(updatedUser);
+    } catch (error) {
+      console.error('Error updating profile photo:', error);
+    }
+  };
+
   return {
     user,
     isLoading,
     login,
     register,
     logout,
+    updateProfilePhoto,
   };
 });

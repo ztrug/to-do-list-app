@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, Alert, Platform } from 'react-native';
 import { Stack, useRouter, useLocalSearchParams } from 'expo-router';
-import { CheckCircle2, Circle, Trash2, Calendar, Flag } from 'lucide-react-native';
+import { CheckCircle2, Circle, Trash2, Calendar, Flag, Share2 } from 'lucide-react-native';
 import { useTodos, Priority } from './contexts/TodosContext';
+import * as Sharing from 'expo-sharing';
 
 export default function TaskDetailsScreen() {
   const router = useRouter();
@@ -76,6 +77,53 @@ export default function TaskDetailsScreen() {
     });
   };
 
+  const handleShare = async () => {
+    try {
+      const shareText = `📋 *${todo.title}*\n\n` +
+        `Status: ${todo.completed ? '✅ Concluída' : '⏳ Pendente'}\n` +
+        `Prioridade: ${getPriorityLabel(todo.priority)}\n` +
+        `Criada em: ${formatDate(todo.createdAt)}` +
+        (todo.dueDate ? `\nData/Hora: ${formatDate(todo.dueDate)}` : '');
+
+      if (Platform.OS === 'web') {
+        if (navigator.share) {
+          await navigator.share({
+            title: 'Compartilhar Tarefa',
+            text: shareText,
+          });
+        } else {
+          await navigator.clipboard.writeText(shareText);
+          Alert.alert('Copiado!', 'Texto copiado para a área de transferência.');
+        }
+      } else {
+        const isAvailable = await Sharing.isAvailableAsync();
+        if (isAvailable) {
+          const blob = new Blob([shareText], { type: 'text/plain' });
+          const reader = new FileReader();
+          reader.onloadend = async () => {
+            const base64data = reader.result as string;
+            const uri = base64data;
+            
+            try {
+              await Sharing.shareAsync(uri, {
+                mimeType: 'text/plain',
+                dialogTitle: 'Compartilhar Tarefa',
+              });
+            } catch (error) {
+              console.error('Error sharing:', error);
+              Alert.alert('Erro', 'Não foi possível compartilhar a tarefa.');
+            }
+          };
+          reader.readAsDataURL(blob);
+        } else {
+          Alert.alert('Erro', 'Compartilhamento não disponível neste dispositivo.');
+        }
+      }
+    } catch (error) {
+      console.error('Error sharing task:', error);
+    }
+  };
+
   return (
     <>
       <Stack.Screen 
@@ -88,6 +136,15 @@ export default function TaskDetailsScreen() {
           headerTitleStyle: {
             fontWeight: '700' as const,
           },
+          headerRight: () => (
+            <TouchableOpacity
+              onPress={handleShare}
+              style={{ marginRight: 16 }}
+              testID="share-button"
+            >
+              <Share2 size={24} color="#fff" />
+            </TouchableOpacity>
+          ),
         }} 
       />
       <ScrollView style={styles.container}>

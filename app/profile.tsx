@@ -4,6 +4,9 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  Image,
+  Alert,
+  Platform,
 } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -15,16 +18,95 @@ import {
   Users,
   LogOut,
   ArrowLeft,
+  Camera,
+  Image as ImageIcon,
 } from 'lucide-react-native';
 import { useAuth } from './contexts/AuthContext';
+import * as ImagePicker from 'expo-image-picker';
 
 export default function ProfileScreen() {
   const router = useRouter();
-  const { user, logout } = useAuth();
+  const { user, logout, updateProfilePhoto } = useAuth();
 
   const handleLogout = async () => {
     await logout();
     router.replace('/login');
+  };
+
+  const pickImageFromGallery = async () => {
+    try {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      
+      if (status !== 'granted') {
+        Alert.alert('Permissão necessária', 'Precisamos de permissão para acessar sua galeria.');
+        return;
+      }
+
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ['images'],
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 0.8,
+      });
+
+      if (!result.canceled && result.assets[0]) {
+        await updateProfilePhoto(result.assets[0].uri);
+      }
+    } catch (error) {
+      console.error('Error picking image:', error);
+      Alert.alert('Erro', 'Não foi possível selecionar a imagem.');
+    }
+  };
+
+  const takePhoto = async () => {
+    try {
+      const { status } = await ImagePicker.requestCameraPermissionsAsync();
+      
+      if (status !== 'granted') {
+        Alert.alert('Permissão necessária', 'Precisamos de permissão para acessar sua câmera.');
+        return;
+      }
+
+      const result = await ImagePicker.launchCameraAsync({
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 0.8,
+      });
+
+      if (!result.canceled && result.assets[0]) {
+        await updateProfilePhoto(result.assets[0].uri);
+      }
+    } catch (error) {
+      console.error('Error taking photo:', error);
+      Alert.alert('Erro', 'Não foi possível tirar a foto.');
+    }
+  };
+
+  const showPhotoOptions = () => {
+    if (Platform.OS === 'web') {
+      pickImageFromGallery();
+      return;
+    }
+
+    Alert.alert(
+      'Foto de Perfil',
+      'Escolha uma opção',
+      [
+        {
+          text: 'Tirar Foto',
+          onPress: takePhoto,
+        },
+        {
+          text: 'Escolher da Galeria',
+          onPress: pickImageFromGallery,
+        },
+        {
+          text: 'Cancelar',
+          style: 'cancel',
+        },
+      ],
+      { cancelable: true }
+    );
   };
 
   const InfoCard = ({
@@ -69,9 +151,23 @@ export default function ProfileScreen() {
             </View>
 
             <View style={styles.profileSection}>
-              <View style={styles.avatarContainer}>
-                <User size={48} color="#fff" strokeWidth={2} />
-              </View>
+              <TouchableOpacity 
+                style={styles.avatarContainer}
+                onPress={showPhotoOptions}
+                testID="avatar-button"
+              >
+                {user?.profilePhoto ? (
+                  <Image 
+                    source={{ uri: user.profilePhoto }} 
+                    style={styles.avatarImage}
+                  />
+                ) : (
+                  <User size={48} color="#fff" strokeWidth={2} />
+                )}
+                <View style={styles.cameraIconContainer}>
+                  <Camera size={16} color="#fff" strokeWidth={2.5} />
+                </View>
+              </TouchableOpacity>
               <Text style={styles.userName}>{user?.name}</Text>
               <Text style={styles.userEmail}>{user?.email}</Text>
             </View>
@@ -160,6 +256,25 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     borderWidth: 4,
     borderColor: 'rgba(255, 255, 255, 0.3)',
+    position: 'relative' as const,
+  },
+  avatarImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 48,
+  },
+  cameraIconContainer: {
+    position: 'absolute' as const,
+    bottom: 0,
+    right: 0,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#6366f1',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 3,
+    borderColor: '#fff',
   },
   userName: {
     fontSize: 24,
