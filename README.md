@@ -1,6 +1,6 @@
 ℹ️ Informações do projeto
 
-Este é um aplicativo móvel nativo e multiplataforma
+Este é um aplicativo móvel nativo e multiplataforma.
 .
 
 Plataforma: Aplicativo nativo para iOS e Android, com opção de exportar para web
