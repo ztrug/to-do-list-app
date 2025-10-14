@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  password     String
+  name         String
+  age          Int
+  howFound     String
+  profilePhoto String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  todos        Todo[]
+  
+  @@map("users")
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  color       String
+  icon        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  todos       Todo[]
+  
+  @@map("categories")
+}
+
+model Todo {
+  id             String   @id @default(cuid())
+  title          String
+  completed      Boolean  @default(false)
+  priority       String
+  dueDate        DateTime?
+  notificationId String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  categoryId     String?
+  category       Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  
+  @@index([userId])
+  @@index([categoryId])
+  @@map("todos")
+}
