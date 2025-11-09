@@ -7,6 +7,10 @@ import listTodosRoute from "./routes/todos/list/route";
 import updateTodoRoute from "./routes/todos/update/route";
 import deleteTodoRoute from "./routes/todos/delete/route";
 import listCategoriesRoute from "./routes/categories/list/route";
+import statisticsTodosRoute from "./routes/todos/statistics/route";
+import searchTodosRoute from "./routes/todos/search/route";
+import byCategoryTodosRoute from "./routes/todos/by-category/route";
+import overdueTodosRoute from "./routes/todos/overdue/route";
 
 export const appRouter = createTRPCRouter({
   example: createTRPCRouter({
@@ -21,6 +25,10 @@ export const appRouter = createTRPCRouter({
     list: listTodosRoute,
     update: updateTodoRoute,
     delete: deleteTodoRoute,
+    statistics: statisticsTodosRoute,
+    search: searchTodosRoute,
+    byCategory: byCategoryTodosRoute,
+    overdue: overdueTodosRoute,
   }),
   categories: createTRPCRouter({
     list: listCategoriesRoute,
