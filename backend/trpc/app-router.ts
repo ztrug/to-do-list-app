@@ -11,6 +11,12 @@ import statisticsTodosRoute from "./routes/todos/statistics/route";
 import searchTodosRoute from "./routes/todos/search/route";
 import byCategoryTodosRoute from "./routes/todos/by-category/route";
 import overdueTodosRoute from "./routes/todos/overdue/route";
+import createTagRoute from "./routes/tags/create/route";
+import listTagsRoute from "./routes/tags/list/route";
+import createCommentRoute from "./routes/comments/create/route";
+import listCommentsRoute from "./routes/comments/list/route";
+import listAttachmentsRoute from "./routes/attachments/list/route";
+import monthlyReportRoute from "./routes/reports/monthly/route";
 
 export const appRouter = createTRPCRouter({
   example: createTRPCRouter({
@@ -32,6 +38,20 @@ export const appRouter = createTRPCRouter({
   }),
   categories: createTRPCRouter({
     list: listCategoriesRoute,
+  }),
+  tags: createTRPCRouter({
+    create: createTagRoute,
+    list: listTagsRoute,
+  }),
+  comments: createTRPCRouter({
+    create: createCommentRoute,
+    list: listCommentsRoute,
+  }),
+  attachments: createTRPCRouter({
+    list: listAttachmentsRoute,
+  }),
+  reports: createTRPCRouter({
+    monthly: monthlyReportRoute,
   }),
 });
 
