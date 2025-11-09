@@ -16,6 +16,8 @@ import listTagsRoute from "./routes/tags/list/route";
 import createCommentRoute from "./routes/comments/create/route";
 import listCommentsRoute from "./routes/comments/list/route";
 import listAttachmentsRoute from "./routes/attachments/list/route";
+import createAttachmentRoute from "./routes/attachments/create/route";
+import deleteAttachmentRoute from "./routes/attachments/delete/route";
 import monthlyReportRoute from "./routes/reports/monthly/route";
 
 export const appRouter = createTRPCRouter({
@@ -49,6 +51,8 @@ export const appRouter = createTRPCRouter({
   }),
   attachments: createTRPCRouter({
     list: listAttachmentsRoute,
+    create: createAttachmentRoute,
+    delete: deleteAttachmentRoute,
   }),
   reports: createTRPCRouter({
     monthly: monthlyReportRoute,
