@@ -1,0 +1,134 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  password     String
+  name         String
+  age          Int
+  howFound     String
+  profilePhoto String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  todos        Todo[]
+  tags         Tag[]
+  comments     Comment[]
+  attachments  Attachment[]
+  
+  @@map("users")
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  color       String
+  icon        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  todos       Todo[]
+  
+  @@map("categories")
+}
+
+model Todo {
+  id             String   @id @default(cuid())
+  title          String
+  completed      Boolean  @default(false)
+  priority       String
+  dueDate        DateTime?
+  notificationId String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  categoryId     String?
+  category       Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  
+  comments       Comment[]
+  attachments    Attachment[]
+  tags           TodoTag[]
+  
+  @@index([userId])
+  @@index([categoryId])
+  @@map("todos")
+}
+
+model Tag {
+  id          String   @id @default(cuid())
+  name        String
+  color       String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  todos       TodoTag[]
+  
+  @@unique([userId, name])
+  @@index([userId])
+  @@map("tags")
+}
+
+model TodoTag {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  
+  todoId    String
+  todo      Todo     @relation(fields: [todoId], references: [id], onDelete: Cascade)
+  
+  tagId     String
+  tag       Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  
+  @@unique([todoId, tagId])
+  @@index([todoId])
+  @@index([tagId])
+  @@map("todo_tags")
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  todoId    String
+  todo      Todo     @relation(fields: [todoId], references: [id], onDelete: Cascade)
+  
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([todoId])
+  @@index([userId])
+  @@map("comments")
+}
+
+model Attachment {
+  id          String   @id @default(cuid())
+  filename    String
+  fileUrl     String
+  fileType    String
+  fileSize    Int
+  createdAt   DateTime @default(now())
+  
+  todoId      String
+  todo        Todo     @relation(fields: [todoId], references: [id], onDelete: Cascade)
+  
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([todoId])
+  @@index([userId])
+  @@map("attachments")
+}
