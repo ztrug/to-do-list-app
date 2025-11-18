@@ -15,4 +15,4 @@ services:
 databases:
   - name: todo-app-db
     databaseName: todo_app
-    plan: starter
+    plan: free
