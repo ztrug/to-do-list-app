@@ -1,11 +1,10 @@
 services:
   - type: web
     name: todo-app-backend
-    runtime: bun              # Usando Node, mas rodando Bun dentro
+    runtime: node
     plan: free
     region: oregon
 
-     # Bun já está disponível, não precisa instalar manualmente
     buildCommand: bun install && bun x prisma generate
     startCommand: bun run server.ts
 
