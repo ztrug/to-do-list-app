@@ -1,9 +1,16 @@
 services:
   - type: web
     name: todo-app-backend
-    runtime: docker
-    dockerfilePath: ./Dockerfile
+    env: bun                 # Mudou de 'runtime: docker' para 'env: bun'
+    plan: free               # Força o plano gratuito
     region: oregon
+    
+    # Comandos para instalar deps e preparar o Prisma
+    buildCommand: bun install && bun x prisma generate
+    
+    # Comando para iniciar o server (baseado no seu arquivo server.ts)
+    startCommand: bun run server.ts
+    
     envVars:
       - key: NODE_ENV
         value: production
@@ -12,7 +19,10 @@ services:
           name: todo-app-db
           property: connectionString
 
+# Esta seção cria o banco de dados Postgres automaticamente
 databases:
   - name: todo-app-db
     databaseName: todo_app
-    plan: free
+    plan: free              # Garante que o banco também seja gratuito
+    user: admin             # Usuário padrão
+    region: oregon
