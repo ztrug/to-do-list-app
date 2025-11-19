@@ -1,37 +1,32 @@
 import { Hono } from "hono";
-import { trpcServer } from "@hono/trpc-server";
 import { cors } from "hono/cors";
 import { appRouter } from "./trpc/app-router";
 import { createContext } from "./trpc/create-context";
+import { trpcServer } from "@hono/trpc-server";
 
 const app = new Hono();
 
-// Habilita CORS
+// habilita CORS para tudo
 app.use("*", cors());
 
-// Registra o TRPC na rota correta
+// ROTA DO TRPC — APENAS ESSA
 app.use(
-  "/api/trpc/*",
+  "/trpc/*",
   trpcServer({
-    endpoint: "/api/trpc",
     router: appRouter,
     createContext,
   })
 );
 
-// Rota teste
-app.get("/", (c) => {
-  return c.json({ status: "ok", message: "API is running" });
-});
+// ROTA TESTE
+app.get("/", (c) => c.json({ status: "ok" }));
 
-// Inicia o servidor
+// inicia servidor
 const port = Number(process.env.PORT) || 3000;
-
 Bun.serve({
   fetch: app.fetch,
   port,
 });
 
 console.log(`Server running on port ${port}`);
-
 export default app;
