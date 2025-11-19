@@ -1,0 +1,13 @@
+# Backend API URL
+# Para desenvolvimento local, use:
+# EXPO_PUBLIC_RORK_API_BASE_URL=http://localhost:3000
+
+# Para o backend no Render, use a URL do seu deploy:
+# Exemplo: EXPO_PUBLIC_RORK_API_BASE_URL=https://seu-app.onrender.com
+
+# Para testar no dispositivo móvel com backend local:
+# Use o IP da sua máquina na rede local
+# Exemplo: EXPO_PUBLIC_RORK_API_BASE_URL=http://192.168.1.100:3000
+
+# Configure a URL do seu backend aqui:
+EXPO_PUBLIC_RORK_API_BASE_URL=http://localhost:3000
