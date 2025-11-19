@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import createContextHook from '@nkzw/create-context-hook';
+import { trpc } from '@/lib/trpc';
 
 interface User {
   id: string;
@@ -40,82 +41,79 @@ export const [AuthContext, useAuth] = createContextHook(() => {
     }
   };
 
+  const registerMutation = trpc.auth.register.useMutation();
+
   const register = async (email: string, password: string, name: string, age: number, howFound: string): Promise<{ success: boolean; error?: string }> => {
     try {
-      const usersJson = await AsyncStorage.getItem(USERS_KEY);
-      const users: StoredUser[] = usersJson ? JSON.parse(usersJson) : [];
-
-      const existingUser = users.find(u => u.email.toLowerCase() === email.toLowerCase());
-      if (existingUser) {
-        return { success: false, error: 'Email já cadastrado' };
-      }
-
-      const newUser: StoredUser = {
-        id: Date.now().toString(),
-        email: email.toLowerCase(),
+      const result = await registerMutation.mutateAsync({
+        email,
         password,
         name,
         age,
         howFound,
-      };
+      });
 
-      users.push(newUser);
-      await AsyncStorage.setItem(USERS_KEY, JSON.stringify(users));
+      if (result.success) {
+        const userWithoutPassword: User = {
+          id: result.user.id,
+          email: result.user.email,
+          name: result.user.name,
+          age: result.user.age,
+          howFound: result.user.howFound,
+          profilePhoto: result.user.profilePhoto,
+        };
 
-      const userWithoutPassword: User = {
-        id: newUser.id,
-        email: newUser.email,
-        name: newUser.name,
-        age: newUser.age,
-        howFound: newUser.howFound,
-        profilePhoto: newUser.profilePhoto,
-      };
+        await AsyncStorage.setItem(CURRENT_USER_KEY, JSON.stringify(userWithoutPassword));
+        await AsyncStorage.setItem('@auth_token', result.token);
+        setUser(userWithoutPassword);
 
-      await AsyncStorage.setItem(CURRENT_USER_KEY, JSON.stringify(userWithoutPassword));
-      setUser(userWithoutPassword);
+        return { success: true };
+      }
 
-      return { success: true };
-    } catch (error) {
-      console.error('Error registering user:', error);
       return { success: false, error: 'Erro ao cadastrar usuário' };
+    } catch (error: any) {
+      console.error('Error registering user:', error);
+      return { success: false, error: error.message || 'Erro ao cadastrar usuário' };
     }
   };
 
+  const loginMutation = trpc.auth.login.useMutation();
+
   const login = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
     try {
-      const usersJson = await AsyncStorage.getItem(USERS_KEY);
-      const users: StoredUser[] = usersJson ? JSON.parse(usersJson) : [];
+      const result = await loginMutation.mutateAsync({
+        email,
+        password,
+      });
 
-      const foundUser = users.find(
-        u => u.email.toLowerCase() === email.toLowerCase() && u.password === password
-      );
+      if (result.success) {
+        const userWithoutPassword: User = {
+          id: result.user.id,
+          email: result.user.email,
+          name: result.user.name,
+          age: result.user.age,
+          howFound: result.user.howFound,
+          profilePhoto: result.user.profilePhoto,
+        };
 
-      if (!foundUser) {
-        return { success: false, error: 'Email ou senha incorretos' };
+        await AsyncStorage.setItem(CURRENT_USER_KEY, JSON.stringify(userWithoutPassword));
+        await AsyncStorage.setItem('@auth_token', result.token);
+        setUser(userWithoutPassword);
+
+        return { success: true };
       }
 
-      const userWithoutPassword: User = {
-        id: foundUser.id,
-        email: foundUser.email,
-        name: foundUser.name,
-        age: foundUser.age,
-        howFound: foundUser.howFound,
-        profilePhoto: foundUser.profilePhoto,
-      };
-
-      await AsyncStorage.setItem(CURRENT_USER_KEY, JSON.stringify(userWithoutPassword));
-      setUser(userWithoutPassword);
-
-      return { success: true };
-    } catch (error) {
-      console.error('Error logging in:', error);
       return { success: false, error: 'Erro ao fazer login' };
+    } catch (error: any) {
+      console.error('Error logging in:', error);
+      return { success: false, error: error.message || 'Email ou senha incorretos' };
     }
   };
 
   const logout = async () => {
     try {
       await AsyncStorage.removeItem(CURRENT_USER_KEY);
+      await AsyncStorage.removeItem('@auth_token');
       setUser(null);
     } catch (error) {
       console.error('Error logging out:', error);
