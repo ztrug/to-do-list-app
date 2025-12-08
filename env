@@ -11,3 +11,9 @@
 
 # Configure a URL do seu backend aqui:
 EXPO_PUBLIC_RORK_API_BASE_URL=http://localhost:3000
+
+# Database URL para Prisma
+# Para desenvolvimento local com PostgreSQL:
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/todoapp?schema=public"
+
+# Para produção no Render, a DATABASE_URL será fornecida automaticamente

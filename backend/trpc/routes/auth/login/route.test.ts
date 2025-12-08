@@ -7,7 +7,12 @@ vi.mock('@/backend/lib/prisma', () => ({
   prisma: prisma,
 }));
 
-vi.mock('bcryptjs');
+vi.mock('bcryptjs', () => ({
+  default: {
+    compare: vi.fn(),
+    hash: vi.fn(),
+  },
+}));
 
 describe('Login Route', () => {
   beforeEach(() => {

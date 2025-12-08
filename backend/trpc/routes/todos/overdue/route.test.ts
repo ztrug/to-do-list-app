@@ -97,6 +97,8 @@ describe('Overdue Todos Route', () => {
   });
 
   it('should only return incomplete todos', async () => {
+    prisma.todo.findMany.mockResolvedValue([]);
+
     const caller = appRouter.createCaller({
       req: {} as any,
       prisma,
