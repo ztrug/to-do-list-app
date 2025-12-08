@@ -256,8 +256,7 @@ rm -rf node_modules && bun install
 
 
 Consulte o guia de solução de erros do Expo
+## Diagrama de Casos de Uso
 
+![diagrama](file:///C:/Users/maria%20clara/Desktop/CASOS_DE_USOS.png)
 
-Seu app Rork está pronto para produção e pode ser publicado na App Store, Google Play ou na web.
-
-Quer que eu formate essa tradução em um arquivo README.pt-BR.md para você colocar no GitHub?
