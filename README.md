@@ -253,10 +253,10 @@ bunx expo start --clear
 Reinstale dependências:
 
 rm -rf node_modules && bun install
+<img width="1536" height="1024" alt="CASOS_DE_USOS" src="https://github.com/user-attachments/assets/d535f370-4294-4e3d-a2cc-94c1c7a16274" />
 
 
 Consulte o guia de solução de erros do Expo
 ## Diagrama de Casos de Uso
-
-![diagrama](file:///C:/Users/maria%20clara/Desktop/CASOS_DE_USOS.png)
+<img width="1536" height="1024" alt="CASOS_DE_USOS" src="https://github.com/user-attachments/assets/d535f370-4294-4e3d-a2cc-94c1c7a16274" />
 
