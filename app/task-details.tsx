@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, Alert, Platform, FlatList, ActivityIndicator } from 'react-native';
 import { Stack, useRouter, useLocalSearchParams } from 'expo-router';
 import { CheckCircle2, Circle, Trash2, Calendar, Flag, Share2, Camera, Image as ImageIcon, X } from 'lucide-react-native';
-import { useTodos, Priority } from './contexts/TodosContext';
+import { useTodos, Priority, Todo } from './contexts/TodosContext';
 import * as Sharing from 'expo-sharing';
 import * as ImagePicker from 'expo-image-picker';
 import { CameraView, useCameraPermissions } from 'expo-camera';
@@ -23,7 +23,7 @@ export default function TaskDetailsScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { allTodos, toggleTodo, deleteTodo } = useTodos();
 
-  const todo = allTodos.find(t => t.id === id);
+  const todo = allTodos.find((t: Todo) => t.id === id);
 
   const [title, setTitle] = useState<string>(todo?.title || '');
   const [priority, setPriority] = useState<Priority>(todo?.priority || 'intermediate');

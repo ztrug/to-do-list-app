@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Stack } from 'expo-router';
 import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, CheckCircle2, Circle } from 'lucide-react-native';
-import { useTodos, Priority } from './contexts/TodosContext';
+import { useTodos, Priority, Todo } from './contexts/TodosContext';
 
 export default function CalendarScreen() {
   const { allTodos, toggleTodo } = useTodos();
@@ -41,11 +41,13 @@ export default function CalendarScreen() {
     const startOfDay = new Date(dateToCheck.setHours(0, 0, 0, 0)).getTime();
     const endOfDay = new Date(dateToCheck.setHours(23, 59, 59, 999)).getTime();
 
-    return allTodos.filter(todo => {
+    return allTodos.filter((todo: Todo) => {
       if (todo.dueDate) {
-        return todo.dueDate >= startOfDay && todo.dueDate <= endOfDay;
+        const dueDateTime = typeof todo.dueDate === 'number' ? todo.dueDate : new Date(todo.dueDate).getTime();
+        return dueDateTime >= startOfDay && dueDateTime <= endOfDay;
       }
-      return todo.createdAt >= startOfDay && todo.createdAt <= endOfDay;
+      const createdAtTime = typeof todo.createdAt === 'number' ? todo.createdAt : new Date(todo.createdAt).getTime();
+      return createdAtTime >= startOfDay && createdAtTime <= endOfDay;
     });
   };
 
@@ -79,7 +81,7 @@ export default function CalendarScreen() {
 
     for (let day = 1; day <= daysInMonth; day++) {
       const tasks = getTasksForDate(day);
-      const hasUrgent = tasks.some(t => t.priority === 'urgent' && !t.completed);
+      const hasUrgent = tasks.some((t: Todo) => t.priority === 'urgent' && !t.completed);
       const isSelected = day === selectedDay;
       const isTodayDate = isToday(day);
 
@@ -173,7 +175,7 @@ export default function CalendarScreen() {
               </View>
             ) : (
               <View style={styles.tasksList}>
-                {tasksForSelectedDay.map(task => (
+                {tasksForSelectedDay.map((task: Todo) => (
                   <TouchableOpacity
                     key={task.id}
                     style={styles.taskItem}

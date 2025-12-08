@@ -3,7 +3,7 @@ import { Stack } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { BarChart3, TrendingUp, CheckCircle2, Clock, AlertCircle } from 'lucide-react-native';
-import { useTodos } from './contexts/TodosContext';
+import { useTodos, Todo } from './contexts/TodosContext';
 
 export default function StatisticsScreen() {
   const { allTodos, stats } = useTodos();
@@ -11,15 +11,15 @@ export default function StatisticsScreen() {
   const completionRate = stats.total > 0 ? Math.round((stats.completed / stats.total) * 100) : 0;
 
   const priorityStats = {
-    urgent: allTodos.filter(t => t.priority === 'urgent').length,
-    intermediate: allTodos.filter(t => t.priority === 'intermediate').length,
-    notUrgent: allTodos.filter(t => t.priority === 'not-urgent').length,
+    urgent: allTodos.filter((t: Todo) => t.priority === 'urgent').length,
+    intermediate: allTodos.filter((t: Todo) => t.priority === 'intermediate').length,
+    notUrgent: allTodos.filter((t: Todo) => t.priority === 'not-urgent').length,
   };
 
   const completedByPriority = {
-    urgent: allTodos.filter(t => t.priority === 'urgent' && t.completed).length,
-    intermediate: allTodos.filter(t => t.priority === 'intermediate' && t.completed).length,
-    notUrgent: allTodos.filter(t => t.priority === 'not-urgent' && t.completed).length,
+    urgent: allTodos.filter((t: Todo) => t.priority === 'urgent' && t.completed).length,
+    intermediate: allTodos.filter((t: Todo) => t.priority === 'intermediate' && t.completed).length,
+    notUrgent: allTodos.filter((t: Todo) => t.priority === 'not-urgent' && t.completed).length,
   };
 
   const urgentCompletionRate = priorityStats.urgent > 0 
