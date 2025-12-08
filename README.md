@@ -205,7 +205,7 @@ bunx expo start --clear
 rm -rf node_modules && bun install
 
 📸 Diagrama de Casos de Uso
-<img width="1536" height="1024" alt="CASOS_DE_USOS" src="https://github.com/user-attachments/assets/d535f370-4294-4e3d-a2cc-94c1c7a16274" /f370-4294-4e3d-a2cc-94c1c7a16274" />
+<img width="1536" height="1024" alt="CASOS_DE_USOS" src="https://github.com/user-attachments/assets/0993432d-a212-4adf-9e1a-721b35772c83" />
 
 
 📸 Diagrama de Classes!
