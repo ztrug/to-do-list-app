@@ -1,95 +1,84 @@
-ℹ️ Informações do projeto
-.
-Este é um aplicativo móvel nativo e multiplataforma..
-.
+📱 Sistema de Gerenciamento de Tarefas — Aplicativo Multiplataforma
 
-Plataforma: Aplicativo nativo para iOS e Android, com opção de exportar para web
-Framework: Expo Router + React Native
+Um aplicativo nativo moderno para iOS, Android e Web, construído com tecnologias móveis de ponta como Expo + React Native + TypeScript.
 
-🧩 Como posso editar este código?
+ℹ️ Informações do Projeto
 
-Há várias maneiras de editar seu aplicativo móvel nativo.
-1. Usando seu editor de código preferido
+Este é um aplicativo:
 
-Se quiser trabalhar localmente com seu próprio editor
+📱 Nativo multiplataforma (iOS, Android, Web)
 
-Se você é iniciante em programação e não sabe qual editor usar, recomendamos o Cursor.
-Se já tem familiaridade com terminais, pode usar o Claude Code.
+⚛️ Construído com Expo Router + React Native
 
-O único requisito é ter Node.js e Bun instalados.
+🧩 Como editar este projeto
+1. Editando localmente com seu editor favorito
 
-Instalar Node.js com nvm
+Recomendado:
 
-Instalar Bun
+👉 Para iniciantes: Cursor
 
-🧭 Passos:
-# Passo 1: Clone o repositório usando a URL do projeto.
+👉 Para usuários avançados: Claude Code
+
+👉 Requisitos: Node.js + Bun instalados
+
+Instale:
+
+Node.js via nvm
+
+Bun: https://bun.sh
+
+🧭 Passos para rodar o projeto
+# 1. Clone o repositório
 git clone <YOUR_GIT_URL>
 
-# Passo 2: Vá para o diretório do projeto.
+# 2. Acesse o diretório
 cd <YOUR_PROJECT_NAME>
 
-# Passo 3: Instale as dependências necessárias.
+# 3. Instale dependências
 bun i
 
-# Passo 4: Inicie a visualização web instantânea do app com recarregamento automático.
+# 4. Rodar versão web
 bun run start-web
 
-# Passo 5: Inicie o preview no iOS
-# Opção A (recomendada):
-bun run start  # depois pressione "i" no terminal para abrir o simulador do iOS
-# Opção B (se for suportada):
-bun run start -- --ios
+# 5. Rodar no iOS
+bun run start     # depois aperte "i" no terminal
 
-3. Editar arquivos diretamente no GitHub
+3. Editar diretamente pelo GitHub
 
-Vá até o arquivo que deseja editar.
+Abra o arquivo
 
-Clique no ícone do lápis (“Edit”).
+Clique no ✏️ Edit
 
-Faça as mudanças e confirme o commit.
+Faça alterações
 
-🛠️ Tecnologias usadas neste projeto
+Confirme o commit
 
-Este projeto foi construído com as tecnologias móveis multiplataforma mais populares:
-
-React Native – framework criado pela Meta (usado no Instagram, Airbnb, etc.)
-
-Expo – extensão do React Native usada por Discord, Shopify, Coinbase, Tesla, Starlink e outros
-
-Expo Router – sistema de rotas baseado em arquivos, com suporte para web e SSR
-
-TypeScript – JavaScript com tipagem segura
-
-React Query – gerenciamento de estado do servidor
-
-Lucide React Native – biblioteca de ícones
-
-📱 Como posso testar o app?
+🛠️ Tecnologias utilizadas
+Tecnologia	Descrição
+React Native	Framework criado pela Meta (Instagram, Airbnb etc.)
+Expo	Toolkit usado por Discord, Tesla, Coinbase
+Expo Router	Rotas baseadas em arquivos, com suporte Web
+TypeScript	Tipagem segura
+React Query	Estado do servidor
+Lucide RN	Ícones vetoriais modernos
+📱 Como testar o app
 1. No celular (recomendado)
- ou o Expo Go
 
-Android: Baixe o Expo Go na Play Store
+Baixe o Expo Go:
 
-Depois rode:
-
-bun run start
-
-e escaneie o QR Code.
-
-2. No navegador
+Android → Play Store
 
 Execute:
 
-bun start-web
+bun run start
 
 
-Isso abrirá uma visualização no navegador (alguns recursos nativos podem não funcionar).
+Escaneie o QR Code.
 
-3. Simulador iOS / Emulador Android
+2. Testar no navegador
+bun run start-web
 
-Se tiver XCode ou Android Studio instalados, pode testar com:
-
+3. Simulador iOS / Android
 # iOS
 bun run start -- --ios
 
@@ -97,105 +86,73 @@ bun run start -- --ios
 bun run start -- --android
 
 🚀 Como publicar o projeto
-Publicar na App Store (iOS)
-
-Instale o EAS CLI:
-
+iOS – App Store
 bun i -g @expo/eas-cli
-
-
-Configure o projeto:
-
 eas build:configure
-
-
-Faça o build:
-
 eas build --platform ios
-
-
-Envie para a App Store:
-
 eas submit --platform ios
 
-Publicar na Google Play (Android)
-
-Faça o build:
-
+Android – Google Play
 eas build --platform android
-
-
-Envie para a Google Play:
-
 eas submit --platform android
 
-Publicar como site
-
-Faça o build para web:
-
+Deploy Web
 eas build --platform web
-
-
-Publique com EAS Hosting:
-
 eas hosting:configure
 eas hosting:deploy
 
 
-Alternativas de hospedagem:
+Outras opções:
 
-Vercel – deploy direto do GitHub
+Vercel
 
-Netlify – integração automática com repositórios
+Netlify
 
-✨ Funcionalidades do app
+✨ Funcionalidades do App
 
-Compatível com iOS, Android e Web
+✔️ App nativo para iOS, Android e Web
 
-Navegação baseada em arquivos (Expo Router)
+✔️ Navegação baseada em arquivos (Expo Router)
 
-Abas de navegação personalizáveis
+✔️ Abas, modais e navegação moderna
 
-Telas modais (sobreposições e diálogos)
+✔️ Armazenamento local (Async Storage)
 
-Suporte a TypeScript
+✔️ Ícones vetoriais de alta qualidade
 
-Armazenamento local (Async Storage)
+✔️ TypeScript em todo o código
 
-Ícones vetoriais (Lucide React Native)
-
-📂 Estrutura do projeto
+📂 Estrutura do Projeto
 ├── app/                    # Telas do aplicativo
-│   ├── (tabs)/            # Abas de navegação
+│   ├── (tabs)/            
 │   │   ├── _layout.tsx
 │   │   └── index.tsx
 │   ├── _layout.tsx
 │   ├── modal.tsx
 │   └── +not-found.tsx
 ├── assets/                # Imagens e ícones
-├── constants/             # Constantes e configurações
-├── app.json               # Configuração do Expo
-├── package.json           # Dependências e scripts
-└── tsconfig.json          # Configuração do TypeScript
+├── constants/             # Configurações
+├── app.json               # Config do Expo
+├── package.json           
+└── tsconfig.json          
 
 🧱 Builds de Desenvolvimento Personalizados
 
-Necessários para recursos nativos avançados, como:
+Necessários para:
 
-Autenticação nativa (Face ID, Google Sign In, etc.)
+Face ID / Touch ID
 
-Compras dentro do app
+Google / Apple Sign In
 
-Recursos de plataforma específicos (widgets, tarefas em segundo plano)
+In-App Purchases
 
 bun i -g @expo/eas-cli
 eas build:configure
 eas build --profile development --platform ios
 eas build --profile development --platform android
-bun start --dev-client
 
-💾 Recursos avançados
-Banco de dados
+💾 Recursos Avançados
+Banco de Dados
 
 Supabase
 
@@ -205,9 +162,11 @@ API própria
 
 Autenticação
 
-AuthSession, Supabase Auth, Firebase Auth (funcionam no Expo Go)
+Supabase Auth
 
-Apple Sign In e Google Sign In (requer build nativo)
+Firebase Auth
+
+Apple / Google Sign In (build nativo)
 
 Notificações Push
 
@@ -217,46 +176,37 @@ Firebase Cloud Messaging
 
 Pagamentos
 
-Stripe, PayPal (web)
+Stripe / Paypal / RevenueCat
 
-RevenueCat ou Expo In-App Purchases (apps nativos)
+🌐 Domínio Personalizado (Web)
 
-Superwall e Adapty (testes e otimização de paywall)
+Opções:
 
-🌐 Domínio personalizado
+EAS Hosting
 
-Para deploys web, é possível usar:
+Vercel
 
-EAS Hosting, Vercel ou Netlify
+Netlify
 
-Em apps móveis, configure o deep linking no app.json.
+🧰 Solução de Problemas
+App não carrega?
 
-🧰 Solução de problemas
-App não carrega no dispositivo?
+Verifique Wi-Fi
 
-Verifique se o celular e o PC estão na mesma rede Wi-Fi
-
-Use modo túnel:
+Use túnel:
 
 bun start -- --tunnel
 
 
-Veja se o firewall não está bloqueando.
+Desative firewall
 
 Build falhou?
-
-Limpe o cache:
-
 bunx expo start --clear
-
-
-Reinstale dependências:
-
 rm -rf node_modules && bun install
-<img width="1536" height="1024" alt="CASOS_DE_USOS" src="https://github.com/user-attachments/assets/d535f370-4294-4e3d-a2cc-94c1c7a16274" />
+
+📸 Diagrama de Casos de Uso
+<img width="1536" height="1024" alt="CASOS_DE_USOS" src="https://github.com/user-attachments/assets/d535f370-4294-4e3d-a2cc-94c1c7a16274" /f370-4294-4e3d-a2cc-94c1c7a16274" />
 
 
-Consulte o guia de solução de erros do Expo
-## Diagrama de Casos de Uso
-<img width="1536" height="1024" alt="CASOS_DE_USOS" src="https://github.com/user-attachments/assets/d535f370-4294-4e3d-a2cc-94c1c7a16274" />
-
+📸 Diagrama de Classes!
+<img width="1536" height="1024" alt="ChatGPT Image 8 de dez  de 2025, 20_02_25" src="https://github.com/user-attachments/assets/b7ac858e-10da-47c2-b3b3-bb3138a04b9e" />
